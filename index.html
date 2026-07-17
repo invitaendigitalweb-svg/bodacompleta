@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASHLY Y ALBERTO</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        @font-face { font-family: 'Mongolian Baiti'; src: url('Mongolian Baiti.ttf') format('truetype'); }
+
+        body { margin: 0; padding: 0; background-color: #ffffff; font-family: 'Georgia', serif; display: flex; flex-direction: column; align-items: center; width: 100%; overflow-x: hidden; }
+        .main-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; background-color: #ffffff; }
+        
+        .img-container { width: 100%; line-height: 0; font-size: 0; }
+        .img-container img { width: 100%; display: block; }
+
+        /* Música */
+        .musica-section { width: 100%; background-color: #001D53; padding: 30px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .texto-escucha { font-family: 'Mongolian Baiti', serif; color: #ffffff; font-size: 20px; margin-bottom: 15px; text-align: center; text-transform: uppercase; }
+        .player-pill { background: #ffffff; padding: 8px 24px; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
+        audio { display: none; }
+        .controls { display: flex; align-items: center; gap: 12px; }
+        .icon-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; }
+        .play-btn { width: 32px; height: 32px; border-radius: 50%; background: #001D53; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        /* Contador */
+        .countdown-section { width: 100%; background-color: #001D53; padding: 40px 20px; color: #ffffff; font-family: 'Cormorant Garamond', serif; text-align: center; }
+        .title { font-size: 28px; letter-spacing: 4px; margin-bottom: 20px; }
+        .time { display: flex; gap: 20px; justify-content: center; }
+        .number { font-size: 32px; font-weight: 600; }
+        .label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Ubicaciones */
+        .ubicaciones-wrapper { position: relative; width: 100%; line-height: 0; }
+        .map-btn-custom { position: absolute; display: block; background-color: #001D53; color: #ffffff; text-decoration: none; font-family: 'Cinzel', sans-serif; font-size: 12px; padding: 10px 0; border-radius: 5px; text-align: center; width: 40%; left: 30%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); font-weight: bold; }
+        .btn-ceremonia { top: 40%; }
+        .btn-recepcion { top: 90%; }
+
+        /* Galería */
+        .gallery-section { width: 100%; background-color: #ffffff; padding: 40px 0 0 0; text-align: center; }
+        .gallery-title { color: #001D53; font-family: 'Cinzel', serif; font-size: 32px; font-weight: 400; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+        .slider-container { position: relative; width: 100%; height: 600px; margin: 0 auto; overflow: hidden; }
+        .slider-container img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.5s ease-in-out; }
+        .slider-container img.active { opacity: 1; }
+
+        /* Formulario */
+        .form-section { width: 100%; padding: 40px 20px; box-sizing: border-box; background-color: #ffffff; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 1.1rem; color: #555; }
+        .row { display: flex; gap: 15px; margin-bottom: 20px; }
+        input[type="text"], input[type="tel"], select, textarea { width: 100%; padding: 14px 20px; border: 1px solid #dcdcdc; border-radius: 30px; background-color: #ededed; box-sizing: border-box; outline: none; font-size: 0.95rem; color: #333; font-family: 'Georgia', serif; }
+        textarea { border-radius: 20px; height: 120px; resize: none; }
+        hr { border: none; border-top: 1px solid #e0e0e0; width: 35%; margin: 30px 0; }
+        .privacy-row { display: flex; align-items: center; font-size: 0.9rem; margin-top: 15px; }
+        .btn-enviar { margin-top: 25px; background-color: #162649; color: #fff; padding: 12px 45px; border: none; border-radius: 30px; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; width: 100%; font-family: 'Georgia', serif; }
+        #mensaje-exito { display: none; text-align: center; padding: 30px; border: 1px solid #e0e0e0; border-radius: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="img-container"><img src="portada.jpg" alt="PORTADA"></div>
+
+        <div class="musica-section">
+            <div class="texto-escucha">ESCUCHA NUESTRA CANCIÓN</div>
+            <div class="player-pill">
+                <audio id="audio"><source src="https://regalalasestrellas.weebly.com/uploads/1/3/2/0/132094004/carin_leon_-_que_m%C3%A1s_puedo_pedir__video_oficial_.mp3"></audio>
+                <div class="controls">
+                    <button class="icon-btn" onclick="rewind()"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M11 12L22 5v14zM2 12l9-7v14z"/></svg></button>
+                    <button class="play-btn" onclick="togglePlay()"><svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="#ffffff"><path d="M8 5v14l11-7z"/></svg></button>
+                    <button class="icon-btn" onclick="forward()"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M13 12L2 5v14zM22 12l-9-7v14z"/></svg></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="img-container"><img src="entrada.jpg" alt="ENTRADA"></div>
+        <div class="img-container"><img src="papas y padrinos.jpg" alt="PAPÁS Y PADRINOS"></div>
+        <div class="img-container"><img src="titulo.jpg" alt="TÍTULO"></div>
+        <div class="img-container"><img src="fecha.jpg" alt="FECHA"></div>
+
+        <div class="countdown-section">
+            <div class="title">SOLO FALTAN</div>
+            <div class="time">
+                <div class="block"><div class="number" id="days"></div><div class="label">DÍAS</div></div>
+                <div class="block"><div class="number" id="hours"></div><div class="label">HORAS</div></div>
+                <div class="block"><div class="number" id="minutes"></div><div class="label">MINUTOS</div></div>
+                <div class="block"><div class="number" id="seconds"></div><div class="label">SEGUNDOS</div></div>
+            </div>
+        </div>
+
+        <div class="ubicaciones-wrapper">
+            <img src="ubicaciones.jpg" alt="UBICACIONES" style="width: 100%;">
+            <a href="https://www.google.com/maps/place/Parroquia+Nuestra+Se%C3%B1ora+de+la+Soledad/data=!4m2!3m1!1s0x0:0xda3dd6fe7dff1c89?sa=X&ved=1t:2428&ictx=111" target="_blank" class="map-btn-custom btn-ceremonia">VER EN MAPA</a>
+            <a href="https://www.google.com/maps/place/Sal%C3%B3n+Cantabria/@28.6386289,-106.0005482,1717m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86ea5b98a41f1757:0x4afd9f7bf2aec77a!8m2!3d28.6386289!4d-106.0005482!16s%2Fg%2F11h2hbkvml?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-btn-custom btn-recepcion">VER EN MAPA</a>
+        </div>
+
+        <div class="img-container"><img src="vestimenta.jpg" alt="VESTIMENTA"></div>
+
+        <div class="gallery-section">
+            <div class="gallery-title">NUESTRA GALERÍA</div>
+            <div class="slider-container">
+                <img src="https://i.imgur.com/sfkOiDC.jpeg" class="active">
+                <img src="https://i.imgur.com/l7mmt8R.jpeg">
+                <img src="https://i.imgur.com/52VfuLy.jpeg">
+                <img src="https://i.imgur.com/wWXMjVJ.jpeg">
+                <img src="https://i.imgur.com/ss1sI5V.jpeg">
+                <img src="https://i.imgur.com/Fmx54S1.jpeg">
+                <img src="https://i.imgur.com/LMIn2FF.jpeg">
+            </div>
+        </div>
+
+        <div class="img-container"><img src="regalos.jpg" alt="Regalos"></div>
+        <div class="img-container" style="margin-top: 50px;"><img src="confirmacion.jpg" alt="Confirmación"></div>
+
+        <div class="form-section">
+            <form id="confirmacion-form">
+                <div class="input-group">
+                    <label>Nombre del asistente</label>
+                    <input type="text" name="nombre" placeholder="Escribe tu nombre y apellido" required>
+                </div>
+                <div class="row">
+                    <input type="tel" name="telefono" placeholder="Teléfono" style="flex: 1;">
+                    <select name="asistencia" style="flex: 1.2;" required>
+                        <option value="" disabled selected>Confirma tu asistencia</option>
+                        <option value="Sí, asistiré">Sí, asistiré</option>
+                        <option value="No podré asistir">No podré asistir</option>
+                    </select>
+                </div>
+                <hr>
+                <div class="input-group">
+                    <label>Déjanos tus buenos deseos:</label>
+                    <textarea name="deseos" placeholder="Escribe aquí..."></textarea>
+                </div>
+                <div class="privacy-row">
+                    <input type="checkbox" id="aviso" required>
+                    <label for="aviso">Acepto el Aviso de privacidad</label>
+                </div>
+                <button type="submit" id="submit-btn" class="btn-enviar">ENVIAR</button>
+            </form>
+            <div id="mensaje-exito"><p>Gracias, hemos recibido tu respuesta.</p></div>
+        </div>
+
+        <div class="img-container"><img src="final.jpg" alt="Final"></div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const playIcon = document.getElementById('playIcon');
+        function togglePlay(){
+            if(audio.paused){ audio.play(); playIcon.innerHTML = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>'; }
+            else { audio.pause(); playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; }
+        }
+        function rewind(){ audio.currentTime -= 10; }
+        function forward(){ audio.currentTime += 10; }
+
+        const images = document.querySelectorAll('.slider-container img');
+        let current = 0;
+        setInterval(() => {
+            images[current].classList.remove('active');
+            current = (current + 1) % images.length;
+            images[current].classList.add('active');
+        }, 6000);
+
+        function updateCountdown() {
+            const diff = new Date('2026-07-18T18:00:00') - new Date();
+            document.getElementById('days').textContent = Math.max(0, Math.floor(diff / (1000*60*60*24)));
+            document.getElementById('hours').textContent = Math.max(0, Math.floor((diff % (1000*60*60*24)) / (1000*60*60)));
+            document.getElementById('minutes').textContent = Math.max(0, Math.floor((diff % (1000*60*60)) / (1000*60)));
+            document.getElementById('seconds').textContent = Math.max(0, Math.floor((diff % (1000*60)) / 1000));
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxkNsaLJMTFYmKx8zZ1SLOUQln1cV71lpQ2hJvgjiUKpc1OXgWIKss-9lpcc1x_CrYc/exec';
+        const form = document.getElementById('confirmacion-form');
+        const btn = document.getElementById('submit-btn');
+        const mensajeExito = document.getElementById('mensaje-exito');
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.innerText = 'ENVIANDO...';
+            fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
+            .then(() => { form.style.display = 'none'; mensajeExito.style.display = 'block'; })
+            .catch(error => { alert("Hubo un problema. Intenta de nuevo."); btn.disabled = false; btn.innerText = 'ENVIAR'; });
+        });
+    </script>
+</body>
+</html>
