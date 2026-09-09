@@ -5,26 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASHLY Y ALBERTO</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&display=swap" rel="stylesheet">
+    <meta property="og:title" content="ASHLY Y ALBERTO">
+    <meta property="og:description" content="Te invitamos a nuestra boda.">
+    <meta property="og:image" content="portada.jpg">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
-    
+
     <style>
         @font-face { font-family: 'Mongolian Baiti'; src: url('Mongolian Baiti.ttf') format('truetype'); }
 
-        body { margin: 0; padding: 0; background-color: #ffffff; font-family: 'Georgia', serif; display: flex; flex-direction: column; align-items: center; width: 100%; overflow-x: hidden; }
-        .main-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; background-color: #ffffff; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+            background-color: #001D53;
+        }
+
+        .fullscreen-wrapper {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SOBRE AZUL MARINO */
+        .envelope-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #001D53;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px;
+            z-index: 10;
+        }
+
+        .flap {
+            position: absolute;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backface-visibility: hidden;
+        }
+
+        .envelope-flap-top {
+            top: 0;
+            border-width: 48vh 50vw 0 50vw;
+            border-color: #0d285e transparent transparent transparent;
+            transform-origin: top;
+            z-index: 4;
+        }
+
+        .envelope-flap-bottom {
+            bottom: 0;
+            border-width: 0 50vw 48vh 50vw;
+            border-color: transparent transparent #001236 transparent;
+            transform-origin: bottom;
+            z-index: 2;
+        }
+
+        .envelope-flap-left {
+            top: 0;
+            border-width: 50vh 0 50vh 50vw;
+            border-color: transparent transparent transparent #001742;
+            z-index: 1;
+        }
+
+        .envelope-flap-right {
+            top: 0;
+            right: 0;
+            left: auto;
+            border-width: 50vh 50vw 50vh 0;
+            border-color: transparent #001742 transparent transparent;
+            z-index: 1;
+        }
+
+        .center-group {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: opacity 0.3s ease;
+        }
+
+        .seal {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .view-text {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            color: #ffffff;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            background-color: rgba(0, 18, 54, 0.9);
+            padding: 8px 18px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* INVITACIÓN */
+        .invitation-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease 0.4s;
+            z-index: 3;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+        }
+
+        .open .envelope-flap-top { transform: rotateX(-180deg); }
+        .open .envelope-flap-bottom { transform: rotateX(180deg); }
+        .open .center-group { opacity: 0; visibility: hidden; }
+        .open .invitation-wrapper { opacity: 1; visibility: visible; z-index: 20; }
+
         .img-container { width: 100%; line-height: 0; font-size: 0; }
         .img-container img { width: 100%; display: block; }
-
-        /* Música */
-        .musica-section { width: 100%; background-color: #001D53; padding: 30px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .texto-escucha { font-family: 'Mongolian Baiti', serif; color: #ffffff; font-size: 20px; margin-bottom: 15px; text-align: center; text-transform: uppercase; }
-        .player-pill { background: #ffffff; padding: 8px 24px; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
-        audio { display: none; }
-        .controls { display: flex; align-items: center; gap: 12px; }
-        .icon-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; }
-        .play-btn { width: 32px; height: 32px; border-radius: 50%; background: #001D53; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
         /* Contador */
         .countdown-section { width: 100%; background-color: #001D53; padding: 40px 20px; color: #ffffff; font-family: 'Cormorant Garamond', serif; text-align: center; }
@@ -71,137 +211,164 @@
         textarea { border-radius: 20px; height: 120px; resize: none; }
         hr { border: none; border-top: 1px solid #e0e0e0; width: 35%; margin: 30px 0; }
         .privacy-row { display: flex; align-items: center; font-size: 0.9rem; margin-top: 15px; }
-        .btn-enviar { margin-top: 25px; background-color: #162649; color: #fff; padding: 12px 45px; border: none; border-radius: 30px; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; width: 100%; font-family: 'Georgia', serif; }
+        .btn-enviar { margin-top: 25px; background-color: #001D53; color: #fff; padding: 12px 45px; border: none; border-radius: 30px; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; width: 100%; font-family: 'Georgia', serif; }
         #mensaje-exito { display: none; text-align: center; padding: 30px; border: 1px solid #e0e0e0; border-radius: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <div class="img-container"><img src="portada.jpg" alt="PORTADA"></div>
+<audio id="audio" loop>
+    <source src="https://regalalasestrellas.weebly.com/uploads/1/3/2/0/132094004/carin_leon_-_que_m%C3%A1s_puedo_pedir__video_oficial_.mp3" type="audio/mpeg">
+</audio>
 
-        <div class="musica-section">
-            <div class="texto-escucha">ESCUCHA NUESTRA CANCIÓN</div>
-            <div class="player-pill">
-                <audio id="audio"><source src="https://regalalasestrellas.weebly.com/uploads/1/3/2/0/132094004/carin_leon_-_que_m%C3%A1s_puedo_pedir__video_oficial_.mp3"></audio>
-                <div class="controls">
-                    <button class="icon-btn" onclick="rewind()"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M11 12L22 5v14zM2 12l9-7v14z"/></svg></button>
-                    <button class="play-btn" onclick="togglePlay()"><svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="#ffffff"><path d="M8 5v14l11-7z"/></svg></button>
-                    <button class="icon-btn" onclick="forward()"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M13 12L2 5v14zM22 12l-9-7v14z"/></svg></button>
+<div class="fullscreen-wrapper">
+
+    <!-- SOBRE AZUL MARINO -->
+    <div class="envelope-container" id="envelope" onclick="openEnvelope()">
+
+        <div class="flap envelope-flap-top"></div>
+        <div class="flap envelope-flap-left"></div>
+        <div class="flap envelope-flap-right"></div>
+        <div class="flap envelope-flap-bottom"></div>
+
+        <!-- SELLO -->
+        <div class="center-group">
+            <img src="https://i.imgur.com/DKPYxuV.png" alt="Sello" class="seal">
+            <div class="view-text">Ver invitación</div>
+        </div>
+
+        <!-- CONTENIDO DE LA INVITACIÓN -->
+        <div class="invitation-wrapper">
+            <div class="main-container">
+                <div class="img-container"><img src="portada.jpg" alt="PORTADA"></div>
+                <div class="img-container"><img src="entrada.jpg" alt="ENTRADA"></div>
+                <div class="img-container"><img src="papas y padrinos.jpg" alt="PAPÁS Y PADRINOS"></div>
+                <div class="img-container"><img src="titulo.jpg" alt="TÍTULO"></div>
+                <div class="img-container"><img src="fecha.jpg" alt="FECHA"></div>
+
+                <div class="countdown-section">
+                    <div class="title">SOLO FALTAN</div>
+                    <div class="time">
+                        <div class="block"><div class="number" id="days">00</div><div class="label">DÍAS</div></div>
+                        <div class="block"><div class="number" id="hours">00</div><div class="label">HORAS</div></div>
+                        <div class="block"><div class="number" id="minutes">00</div><div class="label">MINUTOS</div></div>
+                        <div class="block"><div class="number" id="seconds">00</div><div class="label">SEGUNDOS</div></div>
+                    </div>
                 </div>
+
+                <div class="ubicaciones-wrapper">
+                    <img src="ubicaciones.jpg" alt="UBICACIONES" style="width: 100%;">
+                    <a href="https://www.google.com/maps/place/Parroquia+Nuestra+Se%C3%B1ora+de+la+Soledad/data=!4m2!3m1!1s0x0:0xda3dd6fe7dff1c89?sa=X&ved=1t:2428&ictx=111" target="_blank" class="map-btn-custom btn-ceremonia">VER EN MAPA</a>
+                    <a href="https://www.google.com/maps/place/Sal%C3%B3n+Cantabria/@28.6386289,-106.0005482,1717m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86ea5b98a41f1757:0x4afd9f7bf2aec77a!8m2!3d28.6386289!4d-106.0005482!16s%2Fg%2F11h2hbkvml?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-btn-custom btn-recepcion">VER EN MAPA</a>
+                </div>
+
+                <div class="img-container"><img src="vestimenta.jpg" alt="VESTIMENTA"></div>
+
+                <div class="gallery-section">
+                    <div class="gallery-title">NUESTRA GALERÍA</div>
+                    <div class="slider-container">
+                        <img src="https://i.imgur.com/sfkOiDC.jpeg" class="active">
+                        <img src="https://i.imgur.com/l7mmt8R.jpeg">
+                        <img src="https://i.imgur.com/52VfuLy.jpeg">
+                        <img src="https://i.imgur.com/wWXMjVJ.jpeg">
+                        <img src="https://i.imgur.com/ss1sI5V.jpeg">
+                        <img src="https://i.imgur.com/Fmx54S1.jpeg">
+                        <img src="https://i.imgur.com/LMIn2FF.jpeg">
+                    </div>
+                </div>
+
+                <div class="img-container"><img src="regalos.jpg" alt="Regalos"></div>
+                <div class="img-container" style="margin-top: 50px;"><img src="confirmacion.jpg" alt="Confirmación"></div>
+
+                <div class="form-section">
+                    <form id="confirmacion-form">
+                        <div class="input-group">
+                            <label>Nombre del asistente</label>
+                            <input type="text" name="nombre" placeholder="Escribe tu nombre y apellido" required>
+                        </div>
+                        <div class="row">
+                            <input type="tel" name="telefono" placeholder="Teléfono" style="flex: 1;">
+                            <select name="asistencia" style="flex: 1.2;" required>
+                                <option value="" disabled selected>Confirma tu asistencia</option>
+                                <option value="Sí, asistiré">Sí, asistiré</option>
+                                <option value="No podré asistir">No podré asistir</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="input-group">
+                            <label>Déjanos tus buenos deseos:</label>
+                            <textarea name="deseos" placeholder="Escribe aquí..."></textarea>
+                        </div>
+                        <div class="privacy-row">
+                            <input type="checkbox" id="aviso" required>
+                            <label for="aviso">Acepto el Aviso de privacidad</label>
+                        </div>
+                        <button type="submit" id="submit-btn" class="btn-enviar">ENVIAR</button>
+                    </form>
+                    <div id="mensaje-exito"><p>Gracias, hemos recibido tu respuesta.</p></div>
+                </div>
+
+                <div class="img-container"><img src="final.jpg" alt="Final"></div>
             </div>
         </div>
 
-        <div class="img-container"><img src="entrada.jpg" alt="ENTRADA"></div>
-        <div class="img-container"><img src="papas y padrinos.jpg" alt="PAPÁS Y PADRINOS"></div>
-        <div class="img-container"><img src="titulo.jpg" alt="TÍTULO"></div>
-        <div class="img-container"><img src="fecha.jpg" alt="FECHA"></div>
-
-        <div class="countdown-section">
-            <div class="title">SOLO FALTAN</div>
-            <div class="time">
-                <div class="block"><div class="number" id="days"></div><div class="label">DÍAS</div></div>
-                <div class="block"><div class="number" id="hours"></div><div class="label">HORAS</div></div>
-                <div class="block"><div class="number" id="minutes"></div><div class="label">MINUTOS</div></div>
-                <div class="block"><div class="number" id="seconds"></div><div class="label">SEGUNDOS</div></div>
-            </div>
-        </div>
-
-        <div class="ubicaciones-wrapper">
-            <img src="ubicaciones.jpg" alt="UBICACIONES" style="width: 100%;">
-            <a href="https://www.google.com/maps/place/Parroquia+Nuestra+Se%C3%B1ora+de+la+Soledad/data=!4m2!3m1!1s0x0:0xda3dd6fe7dff1c89?sa=X&ved=1t:2428&ictx=111" target="_blank" class="map-btn-custom btn-ceremonia">VER EN MAPA</a>
-            <a href="https://www.google.com/maps/place/Sal%C3%B3n+Cantabria/@28.6386289,-106.0005482,1717m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86ea5b98a41f1757:0x4afd9f7bf2aec77a!8m2!3d28.6386289!4d-106.0005482!16s%2Fg%2F11h2hbkvml?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-btn-custom btn-recepcion">VER EN MAPA</a>
-        </div>
-
-        <div class="img-container"><img src="vestimenta.jpg" alt="VESTIMENTA"></div>
-
-        <div class="gallery-section">
-            <div class="gallery-title">NUESTRA GALERÍA</div>
-            <div class="slider-container">
-                <img src="https://i.imgur.com/sfkOiDC.jpeg" class="active">
-                <img src="https://i.imgur.com/l7mmt8R.jpeg">
-                <img src="https://i.imgur.com/52VfuLy.jpeg">
-                <img src="https://i.imgur.com/wWXMjVJ.jpeg">
-                <img src="https://i.imgur.com/ss1sI5V.jpeg">
-                <img src="https://i.imgur.com/Fmx54S1.jpeg">
-                <img src="https://i.imgur.com/LMIn2FF.jpeg">
-            </div>
-        </div>
-
-        <div class="img-container"><img src="regalos.jpg" alt="Regalos"></div>
-        <div class="img-container" style="margin-top: 50px;"><img src="confirmacion.jpg" alt="Confirmación"></div>
-
-        <div class="form-section">
-            <form id="confirmacion-form">
-                <div class="input-group">
-                    <label>Nombre del asistente</label>
-                    <input type="text" name="nombre" placeholder="Escribe tu nombre y apellido" required>
-                </div>
-                <div class="row">
-                    <input type="tel" name="telefono" placeholder="Teléfono" style="flex: 1;">
-                    <select name="asistencia" style="flex: 1.2;" required>
-                        <option value="" disabled selected>Confirma tu asistencia</option>
-                        <option value="Sí, asistiré">Sí, asistiré</option>
-                        <option value="No podré asistir">No podré asistir</option>
-                    </select>
-                </div>
-                <hr>
-                <div class="input-group">
-                    <label>Déjanos tus buenos deseos:</label>
-                    <textarea name="deseos" placeholder="Escribe aquí..."></textarea>
-                </div>
-                <div class="privacy-row">
-                    <input type="checkbox" id="aviso" required>
-                    <label for="aviso">Acepto el Aviso de privacidad</label>
-                </div>
-                <button type="submit" id="submit-btn" class="btn-enviar">ENVIAR</button>
-            </form>
-            <div id="mensaje-exito"><p>Gracias, hemos recibido tu respuesta.</p></div>
-        </div>
-
-        <div class="img-container"><img src="final.jpg" alt="Final"></div>
     </div>
 
-    <script>
-        const audio = document.getElementById('audio');
-        const playIcon = document.getElementById('playIcon');
-        function togglePlay(){
-            if(audio.paused){ audio.play(); playIcon.innerHTML = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>'; }
-            else { audio.pause(); playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; }
-        }
-        function rewind(){ audio.currentTime -= 10; }
-        function forward(){ audio.currentTime += 10; }
+</div>
 
-        const images = document.querySelectorAll('.slider-container img');
-        let current = 0;
-        setInterval(() => {
+<script>
+    let isOpen = false;
+
+    function openEnvelope() {
+        if (!isOpen) {
+            isOpen = true;
+            document.getElementById("envelope").classList.add("open");
+
+            // Reproducción automática de música al hacer clic/tap en el sobre
+            const audio = document.getElementById('audio');
+            if (audio) {
+                audio.play().catch(e => console.log("Autoplay bloquado por el navegador:", e));
+            }
+        }
+    }
+
+    // Galería deslizable
+    const images = document.querySelectorAll('.slider-container img');
+    let current = 0;
+    setInterval(() => {
+        if(images.length > 0) {
             images[current].classList.remove('active');
             current = (current + 1) % images.length;
             images[current].classList.add('active');
-        }, 6000);
-
-        function updateCountdown() {
-            const diff = new Date('2026-07-18T18:00:00') - new Date();
-            document.getElementById('days').textContent = Math.max(0, Math.floor(diff / (1000*60*60*24)));
-            document.getElementById('hours').textContent = Math.max(0, Math.floor((diff % (1000*60*60*24)) / (1000*60*60)));
-            document.getElementById('minutes').textContent = Math.max(0, Math.floor((diff % (1000*60*60)) / (1000*60)));
-            document.getElementById('seconds').textContent = Math.max(0, Math.floor((diff % (1000*60)) / 1000));
         }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+    }, 6000);
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxkNsaLJMTFYmKx8zZ1SLOUQln1cV71lpQ2hJvgjiUKpc1OXgWIKss-9lpcc1x_CrYc/exec';
-        const form = document.getElementById('confirmacion-form');
-        const btn = document.getElementById('submit-btn');
-        const mensajeExito = document.getElementById('mensaje-exito');
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            btn.disabled = true;
-            btn.innerText = 'ENVIANDO...';
-            fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
-            .then(() => { form.style.display = 'none'; mensajeExito.style.display = 'block'; })
-            .catch(error => { alert("Hubo un problema. Intenta de nuevo."); btn.disabled = false; btn.innerText = 'ENVIAR'; });
-        });
-    </script>
+    // Cuenta regresiva
+    function updateCountdown() {
+        const diff = new Date('2026-07-18T18:00:00') - new Date();
+        document.getElementById('days').textContent = Math.max(0, Math.floor(diff / (1000*60*60*24)));
+        document.getElementById('hours').textContent = Math.max(0, Math.floor((diff % (1000*60*60*24)) / (1000*60*60)));
+        document.getElementById('minutes').textContent = Math.max(0, Math.floor((diff % (1000*60*60)) / (1000*60)));
+        document.getElementById('seconds').textContent = Math.max(0, Math.floor((diff % (1000*60)) / 1000));
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Envío del Formulario
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkNsaLJMTFYmKx8zZ1SLOUQln1cV71lpQ2hJvgjiUKpc1OXgWIKss-9lpcc1x_CrYc/exec';
+    const form = document.getElementById('confirmacion-form');
+    const btn = document.getElementById('submit-btn');
+    const mensajeExito = document.getElementById('mensaje-exito');
+    
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerText = 'ENVIANDO...';
+        fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
+        .then(() => { form.style.display = 'none'; mensajeExito.style.display = 'block'; })
+        .catch(error => { alert("Hubo un problema. Intenta de nuevo."); btn.disabled = false; btn.innerText = 'ENVIAR'; });
+    });
+</script>
+
 </body>
 </html>
